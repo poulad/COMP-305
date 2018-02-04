@@ -1,11 +1,16 @@
 fileFormatVersion: 2
 guid: 6cdda1b4b92904b0d957b4877f88e46a
-timeCreated: 1517633418
+timeCreated: 1517737829
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: lab2-sprite_0
     21300002: lab2-sprite_1
+    21300004: lab2-sprite_2
+    21300006: lab2-sprite_3
+    21300008: lab2-sprite_5
+    21300010: lab2-sprite_7
+    21300012: lab2-sprite_9
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -96,7 +101,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 0
+        y: 12
         width: 36
         height: 62
       alignment: 0
@@ -110,9 +115,79 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 39
-        y: 0
+        y: 12
         width: 36
         height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lab2-sprite_2
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 12
+        width: 36
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lab2-sprite_3
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 2
+        width: 19
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lab2-sprite_5
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 1
+        width: 36
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lab2-sprite_7
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 1
+        width: 30
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: lab2-sprite_9
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 22
+        width: 7
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
