@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Bomberman
 {
-    public class Movement : MonoBehaviour
+    public class Bomberman : MonoBehaviour
     {
         public Sprite UpSprite;
 
@@ -14,6 +14,14 @@ namespace Bomberman
         public Sprite RightSprite;
 
         public float MaxSpeed = 30;
+
+        public GameObject Bomb;
+
+        [HideInInspector]
+        public int MaxBombs = 1;
+
+        //[HideInInspector]
+        //public int BombsPlaced;
 
         private float SpeedMultiplier = 10;
 
@@ -29,25 +37,30 @@ namespace Bomberman
 
         public void FixedUpdate()
         {
+            MoveBomberman();
+        }
+
+        private void MoveBomberman()
+        {
             float moveX = Input.GetAxis("Horizontal");
             float moveY = Input.GetAxis("Vertical");
 
             if (Math.Abs(moveX) > 0.0001)
             {
                 _spriteRenderer.sprite = moveX > 0 ? RightSprite : LeftSprite;
-                float move = NormalizeMovement(moveX * SpeedMultiplier, MaxSpeed);
+                float move = NormalizeMoveSpeed(moveX * SpeedMultiplier, MaxSpeed);
                 _rigidbody2D.velocity = new Vector2(move, 0);
             }
 
             if (Math.Abs(moveY) > 0.0001)
             {
                 _spriteRenderer.sprite = moveY > 0 ? UpSprite : DownSprite;
-                float move = NormalizeMovement(moveY * SpeedMultiplier, MaxSpeed);
+                float move = NormalizeMoveSpeed(moveY * SpeedMultiplier, MaxSpeed);
                 _rigidbody2D.velocity = new Vector2(0, move);
             }
         }
 
-        private static float NormalizeMovement(float movement, float max)
+        private static float NormalizeMoveSpeed(float movement, float max)
         {
             if (Mathf.Abs(movement) >= max)
                 return movement > 0 ? max : -max;
