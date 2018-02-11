@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace Bomberman
@@ -11,17 +9,13 @@ namespace Bomberman
 
         public GameObject Wall;
 
+        public GameObject PowerUp;
+
         public GameObject Bomberman;
 
         public GameObject Bomb;
 
         private int[][] _map;
-
-        private GameObject _bomberman;
-
-        private Bomberman _bombermanScript;
-
-        private List<GameObject> _bombs = new List<GameObject>(3);
 
         public void Start()
         {
@@ -36,34 +30,12 @@ namespace Bomberman
                 }
             }
 
-            _bomberman = Instantiate(Bomberman, new Vector2(1, 1), Quaternion.identity);
-            _bombermanScript = _bomberman.GetComponent<Bomberman>();
+            Instantiate(Bomberman, new Vector2(1, 1), Quaternion.identity);
         }
 
-        public void FixedUpdate()
+        public static void GameOver()
         {
-            PlaceBomb();
-        }
-
-        private void PlaceBomb()
-        {
-            if (!Input.GetKey(KeyCode.Space))
-                return;
-
-            _bombs = _bombs.Where(b => b != null).ToList();
-
-            if (_bombs.Count == _bombermanScript.MaxBombs)
-                return;
-
-            var bombPosition = new Vector2(
-                (float)Math.Round(_bomberman.transform.position.x, MidpointRounding.ToEven),
-                (float)Math.Round(_bomberman.transform.position.y, MidpointRounding.ToEven)
-            );
-
-            var bomb = Instantiate(Bomb, bombPosition, Quaternion.identity);
-            var bombBehavior = bomb.GetComponent<Bomb>();
-            bombBehavior.FlameRange = 2; // ToDo
-            _bombs.Add(bomb);
+            Debug.Log("Game Over");
         }
 
         private static int[][] GenerateMap()
@@ -78,38 +50,50 @@ namespace Bomberman
                         i == 0 || j == 0 || i == map.Length - 1 || j == map[i].Length - 1 ||
                         (i % 2 == 0 && j % 2 == 0)
                     )
-                        map[i][j] = 1;
+                    {
+                        map[i][j] = Constants.CellKinds.Block;
+                    }
                     else
-                        map[i][j] = UnityEngine.Random.Range(0, 2) == 0
-                            ? 0
-                            : 2;
+                    {
+                        map[i][j] = Random.Range(0, 2) == 0
+                            ? Constants.CellKinds.Empty
+                            : Constants.CellKinds.Wall;
+
+                        if (map[i][j] == Constants.CellKinds.Wall)
+                        {
+                            int random = Random.Range(0, 999997) % 10;
+                            if (new[]
+                                {
+                                    Constants.CellKinds.WallExtraBomb, Constants.CellKinds.WallExpander,
+                                    Constants.CellKinds.WallSkull
+                                }
+                                .Contains(random)
+                            )
+                            {
+                                map[i][j] = random;
+                            }
+                        }
+                    }
                 }
             }
 
-            map[1][1] = map[1][2] = map[2][1] = 0;
+            map[1][1] = map[1][2] = map[2][1] = Constants.CellKinds.Empty;
             return map;
         }
 
         private void Draw(int x, int y, int kind)
         {
-            if (kind == 0)
+            if (kind == Constants.CellKinds.Empty)
                 return;
 
-            GameObject objKind;
-            switch (kind)
+            if (kind > Constants.CellKinds.Wall)
             {
-                case 0:
-                    return;
-                case 1:
-                    objKind = Block;
-                    break;
-                case 2:
-                    objKind = Wall;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                var powerup = Instantiate(PowerUp, new Vector2(x, y), Quaternion.identity);
+                var powerupBehavior = powerup.GetComponent<PowerUp>();
+                powerupBehavior.Kind = kind;
             }
 
+            var objKind = kind == Constants.CellKinds.Block ? Block : Wall;
             Instantiate(objKind, new Vector2(x, y), Quaternion.identity);
         }
     }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Flame
+  - Power Up
   layers:
   - Default
   - TransparentFX

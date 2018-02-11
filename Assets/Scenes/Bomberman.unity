@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Block: {fileID: 1913397925501140, guid: e5937079be436c741a49322f184775da, type: 2}
   Wall: {fileID: 1621266074192564, guid: 260cbefcc099bba4181ab885d725ef6b, type: 2}
+  PowerUp: {fileID: 1978298104643634, guid: e4c931550ee83fb4a9f107c7eb692e7b, type: 2}
   Bomberman: {fileID: 1480375568180100, guid: b553c268528424f4a87124806b9077d0, type: 2}
   Bomb: {fileID: 1597164613666054, guid: 642dc2db9e68e6242b1c7bd104454bcb, type: 2}
 --- !u!1 &1933061648

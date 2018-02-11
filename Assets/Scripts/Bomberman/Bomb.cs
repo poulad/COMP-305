@@ -36,7 +36,7 @@ namespace Bomberman
             flameBehavior.Direction = "Down";
             flameBehavior.Range = FlameRange;
 
-            Destroy(gameObject, 20);
+            Destroy(gameObject);
         }
     }
 }
