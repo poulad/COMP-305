@@ -40,6 +40,14 @@ namespace Bomberman
             MoveBomberman();
         }
 
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other.tag.Equals("Player"))
+            {
+                Destroy(this);
+            }
+        }
+
         private void MoveBomberman()
         {
             float moveX = Input.GetAxis("Horizontal");

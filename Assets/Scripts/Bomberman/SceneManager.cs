@@ -55,7 +55,14 @@ namespace Bomberman
             if (_bombs.Count == _bombermanScript.MaxBombs)
                 return;
 
-            var bomb = Instantiate(Bomb, _bomberman.transform.position, Quaternion.identity);
+            var bombPosition = new Vector2(
+                (float)Math.Round(_bomberman.transform.position.x, MidpointRounding.ToEven),
+                (float)Math.Round(_bomberman.transform.position.y, MidpointRounding.ToEven)
+            );
+
+            var bomb = Instantiate(Bomb, bombPosition, Quaternion.identity);
+            var bombBehavior = bomb.GetComponent<Bomb>();
+            bombBehavior.FlameRange = 2; // ToDo
             _bombs.Add(bomb);
         }
 
