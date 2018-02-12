@@ -17,17 +17,21 @@ namespace Bomberman
 
         public float MaxSpeed = 30;
 
+        public float SlowSpeed = 18;
+
         public GameObject Bomb;
 
         public int MaxBombs = 10;
 
         public int MaxBombRange = 10;
 
-        private float SpeedMultiplier = 10;
+        private float _speedMultiplier = 10;
 
         private int _bombCount = 1;
 
         private int _bombRange = 1;
+
+        private float _initialSpeedMultiplier;
 
         private List<GameObject> _bombs = new List<GameObject>(10);
 
@@ -35,10 +39,11 @@ namespace Bomberman
 
         private SpriteRenderer _spriteRenderer;
 
-        public void Awake()
+        public void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
+            _initialSpeedMultiplier = _speedMultiplier;
         }
 
         public void FixedUpdate()
@@ -114,23 +119,50 @@ namespace Bomberman
             if (Math.Abs(moveX) > 0.0001)
             {
                 _spriteRenderer.sprite = moveX > 0 ? RightSprite : LeftSprite;
-                float move = NormalizeMoveSpeed(moveX * SpeedMultiplier, MaxSpeed);
+                float move = NormalizeMoveSpeed(moveX * _speedMultiplier, MaxSpeed);
                 _rigidbody2D.velocity = new Vector2(move, 0);
             }
 
             if (Math.Abs(moveY) > 0.0001)
             {
                 _spriteRenderer.sprite = moveY > 0 ? UpSprite : DownSprite;
-                float move = NormalizeMoveSpeed(moveY * SpeedMultiplier, MaxSpeed);
+                float move = NormalizeMoveSpeed(moveY * _speedMultiplier, MaxSpeed);
                 _rigidbody2D.velocity = new Vector2(0, move);
             }
         }
 
+        #region Power Up - Skull
+
         private void GetSick()
         {
             _spriteRenderer.color = Color.magenta;
-            // ToDo
+            int random = UnityEngine.Random.Range(0, 98787645) % 3;
+            switch (random)
+            {
+                case 0:
+                    Debug.Log("Skull: Temporarily reducing speed (6 seconds)");
+                    _speedMultiplier = 3;
+                    Invoke("RestoreSpeed", 6);
+                    break;
+                case 1:
+                    Debug.Log("Skull: Making Bomberman invisible");
+                    _spriteRenderer.sprite = UpSprite = RightSprite = DownSprite = LeftSprite = null;
+                    break;
+                case 2:
+                    Debug.Log("Skull: Allowing only one minimum-range bomb to be laid at a time");
+                    _bombCount = 1;
+                    _bombRange = 1;
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
         }
+
+        private void RestoreSpeed()
+        {
+            _speedMultiplier = _initialSpeedMultiplier;
+        }
+
+        #endregion
 
         private void Die()
         {
