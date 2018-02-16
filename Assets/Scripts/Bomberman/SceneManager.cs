@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Bomberman.Movement;
 using UnityEngine;
 
 namespace Bomberman
@@ -30,12 +31,34 @@ namespace Bomberman
                 }
             }
 
-            Instantiate(Bomberman, new Vector2(1, 1), Quaternion.identity);
-        }
-
-        public static void GameOver()
-        {
-            Debug.Log("Game Over");
+            {
+                var bomberman = Instantiate(Bomberman, new Vector2(1, 1), Quaternion.identity);
+                bomberman.name = "Player 1";
+                var behavior = bomberman.GetComponent<Bomberman>();
+                behavior.MovementController = new KeyboardController(
+                    KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, KeyCode.Space
+                );
+            }
+            {
+                var bomberman = Instantiate(Bomberman, new Vector2(1, 11), Quaternion.identity);
+                bomberman.name = "Player 2";
+                var behavior = bomberman.GetComponent<Bomberman>();
+                behavior.MovementController = new JoystickController("XBox LeftJoystick X", "XBox LeftJoystick Y", "XBox A");
+            }
+            {
+                var bomberman = Instantiate(Bomberman, new Vector2(13, 11), Quaternion.identity);
+                bomberman.name = "Player 3";
+                var behavior = bomberman.GetComponent<Bomberman>();
+                behavior.MovementController = new KeyboardController(
+                    KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.Return
+                );
+            }
+            {
+                var bomberman = Instantiate(Bomberman, new Vector2(13, 1), Quaternion.identity);
+                bomberman.name = "Player 4";
+                var behavior = bomberman.GetComponent<Bomberman>();
+                behavior.MovementController = new JoystickController("PS LeftJoystick X", "PS LeftJoystick Y", "PS X");
+            }
         }
 
         private static int[][] GenerateMap()
@@ -78,6 +101,9 @@ namespace Bomberman
             }
 
             map[1][1] = map[1][2] = map[2][1] = Constants.CellKinds.Empty;
+            map[1][11] = map[2][11] = map[1][10] = Constants.CellKinds.Empty;
+            map[13][11] = map[12][11] = map[13][10] = Constants.CellKinds.Empty;
+            map[13][1] = map[2][11] = map[1][10] = Constants.CellKinds.Empty;
             return map;
         }
 

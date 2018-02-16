@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bomberman.Movement;
 using UnityEngine;
 
 namespace Bomberman
@@ -24,6 +25,9 @@ namespace Bomberman
         public int MaxBombs = 10;
 
         public int MaxBombRange = 10;
+
+        [HideInInspector]
+        public IMovementController MovementController { get; set; }
 
         private float _speedMultiplier = 10;
 
@@ -66,7 +70,7 @@ namespace Bomberman
 
         private void PlaceBomb()
         {
-            if (!Input.GetKey(KeyCode.Space))
+            if (!MovementController.BombPressed())
                 return;
 
             _bombs = _bombs.Where(b => b != null).ToList();
@@ -113,10 +117,10 @@ namespace Bomberman
 
         private void MoveBomberman()
         {
-            float moveX = Input.GetAxis("Horizontal");
-            float moveY = Input.GetAxis("Vertical");
+            float moveX = MovementController.GetMovementX();
+            float moveY = MovementController.GetMovementY();
 
-            if (Math.Abs(moveX) > 0.0001)
+            if (Math.Abs(moveX) > 0)
             {
                 _spriteRenderer.sprite = moveX > 0 ? RightSprite : LeftSprite;
                 float move = NormalizeMoveSpeed(moveX * _speedMultiplier, MaxSpeed);
@@ -140,16 +144,16 @@ namespace Bomberman
             switch (random)
             {
                 case 0:
-                    Debug.Log("Skull: Temporarily reducing speed (6 seconds)");
+                    Debug.LogWarning("Skull: Temporarily reducing speed (6 seconds)");
                     _speedMultiplier = 3;
                     Invoke("RestoreSpeed", 6);
                     break;
                 case 1:
-                    Debug.Log("Skull: Making Bomberman invisible");
+                    Debug.LogWarning("Skull: Making Bomberman invisible");
                     _spriteRenderer.sprite = UpSprite = RightSprite = DownSprite = LeftSprite = null;
                     break;
                 case 2:
-                    Debug.Log("Skull: Allowing only one minimum-range bomb to be laid at a time");
+                    Debug.LogWarning("Skull: Allowing only one minimum-range bomb to be laid at a time");
                     _bombCount = 1;
                     _bombRange = 1;
                     break;
@@ -166,7 +170,7 @@ namespace Bomberman
 
         private void Die()
         {
-            SceneManager.GameOver();
+            Debug.LogErrorFormat("Bomberman died: '{0}'", name);
             Destroy(gameObject);
         }
 
