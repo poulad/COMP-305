@@ -7,6 +7,7 @@ TagManager:
   - Wall
   - Flame
   - Power Up
+  - Platform
   layers:
   - Default
   - TransparentFX
